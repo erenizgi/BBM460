@@ -98,7 +98,7 @@ function App() {
                             <div key={item} className="value-column" style={{
                                 minHeight: 0,
                                 height: (parseInt(values[item]) / maxValues[item]) * 100 + "%"
-                            }}>{values[item] + (item === "temperature" ? " °C" : item === "humidity" ? "%" : " LDR")}
+                            }}>{values[item] + (item === "temperature" ? " °C" : item === "humidity" ? "%" : " LUX")}
                             </div>
                         </div>)}
                     </div>

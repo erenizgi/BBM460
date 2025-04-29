@@ -1,45 +1,56 @@
 #include <Arduino.h>
 #include "DHT.h"
 
-#define DHTPIN 4          // DHT22 DATA connected to GPIO4
-#define DHTTYPE DHT22     // DHT 22 (AM2302)
-#define LDRPIN 36         // LDR SIGNAL connected to GPIO36 (ADC1_CH0)
+#define DHTPIN 4         
+#define DHTTYPE DHT22     
+#define LDRPIN 36         
 
 DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
   Serial.begin(115200);
-  delay(2000); // Wait for the sensor to stabilize
+  delay(2000); 
   dht.begin();
-  delay(2000); // Wait for the sensor to stabilize
+  delay(2000);
   Serial.println("System initialized. Reading sensor values...");
 }
 
 void loop() {
-  // Read temperature and humidity from DHT22
+
+  int randomNum = rand()%101;
+  int randomDivider = rand()%101;
+  float finalNumber = ((float)randomNum/(float)randomDivider);
+  while (finalNumber > 2){
+    finalNumber = finalNumber-2;
+  }
+  if (finalNumber < 0.5){
+    finalNumber += 0.5;
+  }
+
   float temperature = dht.readTemperature();
+  temperature = temperature * finalNumber;
+
   float humidity = dht.readHumidity();
+  humidity = humidity * finalNumber;
 
-  // Read light level from LDR
   int lightLevel = analogRead(LDRPIN);
-
-  // Check if DHT22 reading was successful
-  
   if (isnan(temperature) || isnan(humidity)) {
     Serial.println("Failed to read from DHT22 sensor!");
   } else {
     Serial.print("Temperature: ");
     Serial.print(temperature);
-    Serial.print(" °C | Humidity: ");
+    Serial.println(" °C");
+
+    Serial.print("Humidity: ");
     Serial.print(humidity);
-    Serial.println(" %");
+    Serial.println("%");
   }
 
   Serial.print("Light Level (LDR): ");
   Serial.println(lightLevel);
+  Serial.print("\n");
 
-  Serial.println("--------------------------");
-  delay(2000); // Wait 2 seconds before next reading
+  delay(2000);
   
   
 }

@@ -1,10 +1,46 @@
+@font-face {
+    font-family: 'MontserratCustom';
+    src: url("./fonts/Montserrat-VariableFont_wght.ttf") format("truetype");
+    font-style: normal;
+}
+@font-face {
+    font-family: 'MontserratCustomBold';
+    src: url("./fonts/static/Montserrat-Bold.ttf") format("truetype");
+    font-style: normal;
+}
+
+body {
+    font-family: 'MontserratCustom', sans-serif;
+}
+
 .app{
     margin: 0;
     width: 100vw;
     height: 100vh;
     background-color: #222222;
 }
+.info-container{
+    width: 70%;
+    display: flex;
 
+}
+.info-container p{
+    width: 33%;
+    font-size: 1.7rem;
+    text-align: center;
+    color: white;
+}
+.content-container{
+    gap: 2rem;
+    width: 100%;
+    height: 70vh;
+    display: flex;
+}
+
+.main-container{
+    display: flex;
+    flex-direction: column;
+}
 .columns-container{
     width: 70%;
     padding: 1rem;
@@ -58,6 +94,21 @@
     border-radius: 2rem;
 }
 
+.header{
+    color: white;
+}
+.divider{
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.5);
+    margin-bottom: 1rem;
+}
+.main-container{
+    height: 80vh;
+    gap: 1rem;
+    display: flex;
+}
+
 .value-column{
     width: 40%;
     color: #CCCCCC;
@@ -68,4 +119,12 @@
     background: linear-gradient(darkgoldenrod, deepskyblue);
     border-top-right-radius: 1rem;
     border-top-left-radius: 1rem;
+}
+
+.warning-signs{
+    width: 30%;
+    justify-content: center;
+    color: lightgray;
+    font-size: 1.5rem;
+
 }

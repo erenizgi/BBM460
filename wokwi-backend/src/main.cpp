@@ -1,39 +1,51 @@
 #include <Arduino.h>
-#include "DHT.h"
+#include <WiFi.h>
+#include <PubSubClient.h>
+#include <DHT.h>
 
 #define DHTPIN 4         
 #define DHTTYPE DHT22     
 #define LDRPIN 36         
 
 DHT dht(DHTPIN, DHTTYPE);
+WiFiClient espClient;
+PubSubClient client(espClient);
+
+const char* ssid = "SeninWiFiAdin";
+const char* password = "WiFiSifren";
+const char* mqtt_server = "broker.hivemq.com";
 
 void setup() {
   Serial.begin(115200);
   delay(2000); 
   dht.begin();
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("WiFi bağlandı");
+  
   delay(2000);
+  client.setServer(mqtt_server, 1883);
   Serial.println("System initialized. Reading sensor values...");
 }
 
 void loop() {
+if (!client.connected()) {
+    client.connect("esp32-client");
+  }
+  client.loop();
 
-  int randomNum = rand()%101;
-  int randomDivider = rand()%101;
-  float finalNumber = ((float)randomNum/(float)randomDivider);
-  while (finalNumber > 2){
-    finalNumber = finalNumber-2;
-  }
-  if (finalNumber < 0.5){
-    finalNumber += 0.5;
-  }
+
 
   float temperature = dht.readTemperature();
-  temperature = temperature * finalNumber;
-
   float humidity = dht.readHumidity();
-  humidity = humidity * finalNumber;
-
   int lightLevel = analogRead(LDRPIN);
+
+  String payload = "Sıcaklık: " + String(temperature) + "°C, Nem: " + String(humidity) + "%" + "Light: " + String(lightLevel);
+  client.publish("wokwi/test", payload.c_str());
+
   if (isnan(temperature) || isnan(humidity)) {
     Serial.println("Failed to read from DHT22 sensor!");
   } else {

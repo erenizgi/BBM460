@@ -19,7 +19,8 @@ void setup() {
   Serial.begin(115200);
   delay(2000); 
   dht.begin();
-  WiFi.begin(ssid, password);
+  Serial.print("Connecting to WiFi");
+  WiFi.begin("Wokwi-GUEST", "", 6);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");

@@ -11,8 +11,8 @@ DHT dht(DHTPIN, DHTTYPE);
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-const char* ssid = "SeninWiFiAdin";
-const char* password = "WiFiSifren";
+const char* ssid = "Xiaomi_F86B_5G";
+const char* password = "5DA8jxGe";
 const char* mqtt_server = "broker.hivemq.com";
 
 void setup() {

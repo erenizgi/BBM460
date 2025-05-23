@@ -1,8 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const dataRoutes = require('./routes/dataRoutes');
+const mqtt = require('mqtt');
 const fs = require("fs");
-const {all} = require("express/lib/application");
 
 global.datas = [];
 global.queue = 0;
@@ -14,31 +14,20 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/sensorData', dataRoutes)
+global.latestMessage = "";
+
+const mqttClient = mqtt.connect("mqtt://broker.hivemq.com:1883");
+mqttClient.on('connect', () => {
+    console.log("MQTT bağlandı!");
+    mqttClient.subscribe("wokwi/erenBBM460");
+});
+
+mqttClient.on('message', (topic, message) => {
+    console.log(`Geldi: ${message.toString()}`);
+    global.latestMessage = message.toString();
+});
+
 
 app.listen(PORT, () => {
-    fs.readFile('./dummyInput.txt', 'utf8', (err, data) => {
-        if (err) {
-            console.error(err);
-            return;
-        }
-        const dataArray = data.split("\n");//
-        let sanitized = dataArray.map((item) => item.replace("\r", ''));
-        sanitized = sanitized.filter((item) => item);
-        const allData = []
-        for (let i = 0; i < sanitized.length; i += 3) {
-            const temperature = sanitized[i].split(" ")[1];
-            const humidity = ((sanitized[i+1].split(" "))[1]).split("%")[0];
-            const light = sanitized[i+2].split(" ")[3];
-            const dataObj = {
-                "temperature" : temperature,
-                "humidity": humidity,//
-                "light": light,
-            };
-            allData.push(dataObj);
-            global.datas = allData
-        }
-
-
-    });
     console.log(`Server running at http://localhost:${PORT}`);
 });

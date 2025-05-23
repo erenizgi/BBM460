@@ -32,8 +32,12 @@ void setup() {
 }
 
 void loop() {
-if (!client.connected()) {
-    client.connect("esp32-client");
+  if (!client.connected()) {
+    while (!client.connect("esp32-client")) {
+      Serial.print(".");
+      delay(1000);
+    }
+    Serial.println("MQTT broker'a bağlanıldı.");
   }
   client.loop();
 

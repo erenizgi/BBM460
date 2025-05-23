@@ -11,8 +11,8 @@ DHT dht(DHTPIN, DHTTYPE);
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-const char* ssid = "Wokwi-GUEST";
-const char* password = "";
+const char* ssid = "Xiaomi_F86B";
+const char* password = "5DA8jxGe";
 const char* mqtt_server = "broker.hivemq.com";
 
 void setup() {
@@ -48,7 +48,7 @@ void loop() {
   int lightLevel = analogRead(LDRPIN);
 
   String payload = "Sıcaklık: " + String(temperature) + "°C, Nem: " + String(humidity) + "%" + "Light: " + String(lightLevel);
-  client.publish("wokwi/test", payload.c_str());
+  client.publish("wokwi/erenBBM460", payload.c_str());
 
   if (isnan(temperature) || isnan(humidity)) {
     Serial.println("Failed to read from DHT22 sensor!");
